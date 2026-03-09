@@ -65,8 +65,8 @@ jobs:
           QWEATHER_API_HOST: ${{ secrets.QWEATHER_API_HOST }}
           # 城市配置（非敏感信息，直接写在这里）
           CITY_1_PERSON: 胜泽
-          CITY_1_ID: '101240101'
-          CITY_1_NAME: 南昌
+          CITY_1_ID: '101010100'
+          CITY_1_NAME: 北京
           CITY_2_PERSON: 一心
           CITY_2_ID: '101240101'
           CITY_2_NAME: 南昌
