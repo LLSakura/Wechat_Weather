@@ -20,7 +20,7 @@ GEMINI_MODEL: str = os.getenv("GEMINI_MODEL", "gemini-3-flash-preview")
 
 # ---- 和风天气 ----
 QWEATHER_API_KEY: str = os.getenv("QWEATHER_API_KEY", "")
-QWEATHER_API_HOST: str = os.getenv("QWEATHER_API_HOST", "https://devapi.qweather.com")
+QWEATHER_API_HOST: str = os.getenv("QWEATHER_API_HOST", "https://m563yx52ka.re.qweatherapi.com")
 
 # ---- 推送时间 ----
 MORNING_TIME: str = os.getenv("MORNING_TIME", "07:20")
