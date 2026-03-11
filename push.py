@@ -30,9 +30,14 @@ def send_message(title: str, content: str) -> bool:
 def build_html_content(date_str, mode, weather_sections, gemini_comment, gemini_news="", love_msg="", greeting="") -> str:
     # 标题与配色
     mode_label = "🌞 早安推送" if mode == "morning" else "🌙 晚安推送"
-    bg_color, card_bg, text_dark, text_sub, accent_red, yellow_card = (
-        "#E4EBE5", "#FFFFFF", "#1C3326", "#73867A", "#D65C4F", "#FFF9EB"
-    )
+
+    # 精调淡粉色莫兰迪配色
+    bg_color = "#F7E8E8"        # 柔和淡粉色背景
+    card_bg = "#FFFFFF"         # 纯白卡片保持不变
+    text_dark = "#4A3A3A"       # 深咖色标题（比纯黑更温柔）
+    text_sub = "#9E8B8B"        # 灰粉色次要文字
+    accent_red = "#E68A8A"      # 珊瑚粉（用于温度和重点）
+    yellow_card = "#FFF5F5"     # 极浅粉色（用于 AI 提醒区块，取代原来的淡黄色）
 
     # 预处理文本换行
     comment_fmt = gemini_comment.replace("\n", "<br>") if gemini_comment else ""
@@ -98,9 +103,5 @@ def build_html_content(date_str, mode, weather_sections, gemini_comment, gemini_
             “在这漫长的一生里，你是那场永不落幕的晨光。”
         </p>
     </div>
-
-    <p style="text-align:center; font-size:10px; color:#A0AFA6; margin-top:20px; opacity:0.5;">
-        Design Inspired by Dribbble · AI Powered
-    </p>
 </div>
 """
