@@ -93,5 +93,14 @@ def build_html_content(date_str, mode, weather_sections, gemini_comment, gemini_
         <span style="font-size:24px; display:block; margin-bottom:12px;">💌</span>
         <p style="margin:0; font-size:15px; color:{text_dark}; line-height:1.8; font-style:italic; font-weight:500;">"{love_msg}"</p>
     </div>
+    <div style="text-align:center; margin-top:35px; padding:0 20px;">
+        <p style="font-size:12px; color:{text_sub}; line-height:1.6; margin:0; letter-spacing:1px; opacity:0.8;">
+            “在这漫长的一生里，你是那场永不落幕的晨光。”
+        </p>
+    </div>
+
+    <p style="text-align:center; font-size:10px; color:#A0AFA6; margin-top:20px; opacity:0.5;">
+        Design Inspired by Dribbble · AI Powered
+    </p>
 </div>
 """
