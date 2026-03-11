@@ -1,5 +1,5 @@
 """
-love_message.py - 使用 Gemini 生成：天气点评 + 个性化英语情话
+love_message.py - 使用 Gemini 生成：天气点评 + 国际政治新闻 + 个性化英语情话
 """
 import random
 from datetime import datetime
@@ -33,14 +33,15 @@ def generate_love_message(
     date_str: str = "",
 ) -> dict:
     """
-    使用 Gemini 生成：天气点评 + 英语情话
+    使用 Gemini 生成：天气点评 + 国际政治新闻 + 英语情话
 
     Returns:
-        dict: {"comment": "天气点评...", "love": "英语情话..."}
+        dict: {"comment": "天气点评...", "news": "国际政治...", "love": "英语情话..."}
     """
     if not GEMINI_API_KEY:
         return {
             "comment": "",
+            "news": "暂无新闻（未配置 API Key）",
             "love": random.choice(CLASSIC_LOVE_MESSAGES),
         }
 
@@ -51,10 +52,14 @@ def generate_love_message(
         f"风{w.get('wind_dir','--')}{w.get('wind_scale','--')}级"
         for w in weather_sections
     )
+    
+    # 动态提取要发送的人名（自动获取你配置的 Sakura 和 之间）
+    people_names = " and ".join([w['person'] for w in weather_sections])
+
     inspirations = random.sample(CLASSIC_LOVE_MESSAGES, 3)
     inspiration_text = "\n".join(f"  - {m}" for m in inspirations)
 
-    prompt = f"""You are writing a daily message for a couple: 黄胜泽 (Shengze, in Beijing) and 马一心 (Yixin, in Nanchang).
+    prompt = f"""You are writing a daily message for: {people_names}.
 
 Today's info:
 - Date: {date_str or datetime.now().strftime('%Y-%m-%d')}
@@ -62,19 +67,23 @@ Today's info:
 - Weather:
 {weather_desc}
 
-Please write TWO parts, clearly labeled:
+Please write THREE parts, clearly labeled:
 
 **PART 1 - Weather Commentary (in Chinese, 2-3 sentences):**
-Based on the weather above, give a warm, caring comment. For example, if it's cold remind them to dress warm, if it's rainy remind them to bring an umbrella, if it's sunny encourage them to enjoy the day. Be specific to the actual weather data. Address both 胜泽 and 一心 by name if their weather is different.
+Based on the weather above, give a warm, caring comment. Be specific to the actual weather data. Address them by name.
 
-**PART 2 - Love Message (in English, 2-3 sentences):**
-Write a sweet, poetic English love message. Naturally weave in the weather or time of day. Make it feel personal to Shengze and Yixin. Be creative and different each time.
+**PART 2 - Daily International Politics (in Chinese, 3 bullet points):**
+Provide 3 brief, objective bullet points covering today's most important global international political news. Make it concise and easy to read.
 
-Style inspirations for Part 2 (do NOT copy these):
+**PART 3 - Love Message (in English, 2-3 sentences):**
+Write a sweet, poetic English love message. Naturally weave in the weather or time of day. Make it feel personal to {people_names}.
+
+Style inspirations for Part 3 (do NOT copy these):
 {inspiration_text}
 
 Format your response EXACTLY like this (keep the labels):
 COMMENT: [your Chinese weather commentary here]
+NEWS: [your 3 bullet points of international news here]
 LOVE: [your English love message here]"""
 
     try:
@@ -89,36 +98,47 @@ LOVE: [your English love message here]"""
         )
         text = response.text.strip()
 
-        # 解析 COMMENT 和 LOVE
+        # 解析 COMMENT, NEWS 和 LOVE
         comment = ""
+        news = ""
         love = ""
-        if "COMMENT:" in text and "LOVE:" in text:
-            parts = text.split("LOVE:")
-            comment = parts[0].replace("COMMENT:", "").strip()
-            love = parts[1].strip().strip('"').strip("'").strip()
+        
+        if "COMMENT:" in text and "NEWS:" in text and "LOVE:" in text:
+            try:
+                parts = text.split("NEWS:")
+                comment = parts[0].replace("COMMENT:", "").strip()
+                
+                parts2 = parts[1].split("LOVE:")
+                news = parts2[0].strip()
+                love = parts2[1].strip().strip('"').strip("'").strip()
+            except Exception:
+                love = text.strip('"').strip("'").strip()
         else:
-            # 如果格式不对，整段作为 love
+            # 如果格式不对，整段作为 love 兜底
             love = text.strip('"').strip("'").strip()
 
         return {
             "comment": comment if comment else "",
+            "news": news if news else "今日国际新闻生成失败。",
             "love": love if love else random.choice(CLASSIC_LOVE_MESSAGES),
         }
     except Exception as e:
         print(f"  ⚠️ Gemini 调用失败（{e}），使用经典情话")
         return {
             "comment": "",
+            "news": "API 调用失败，暂无新闻",
             "love": random.choice(CLASSIC_LOVE_MESSAGES),
         }
 
 
 if __name__ == "__main__":
     test_sections = [
-        {"person": "胜泽", "city": "北京", "text": "阴", "temp_min": "0", "temp_max": "5",
-         "feels_like": "-2", "humidity": "40", "wind_dir": "北风", "wind_scale": "3"},
-        {"person": "一心", "city": "南昌", "text": "阴", "temp_min": "9", "temp_max": "14",
-         "feels_like": "7", "humidity": "75", "wind_dir": "东风", "wind_scale": "2"},
+        {"person": "Sakura", "city": "北京", "text": "晴", "temp_min": "2", "temp_max": "16",
+         "feels_like": "10", "humidity": "14", "wind_dir": "东北风", "wind_scale": "2"},
+        {"person": "之间", "city": "南康", "text": "晴", "temp_min": "9", "temp_max": "21",
+         "feels_like": "15", "humidity": "50", "wind_dir": "东北风", "wind_scale": "1"},
     ]
     result = generate_love_message(test_sections, mode="morning")
-    print(f"📝 点评：{result['comment']}")
-    print(f"💕 情话：{result['love']}")
+    print(f"📝 点评：\n{result['comment']}\n")
+    print(f"🌍 新闻：\n{result['news']}\n")
+    print(f"💕 情话：\n{result['love']}")
