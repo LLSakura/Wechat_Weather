@@ -18,11 +18,16 @@ def _get_weather_qweather(city_id: str) -> dict:
     # 强制使用和风天气标准的 API 地址，不再使用变量
     # 找到原本定义 QWEATHER_API_KEY 的地方，直接把你的 Key 贴进去
     # 记得用引号包起来！
-    QWEATHER_API_KEY = "de33168227494ca6b637c76b52b67eed"
-    # 强制直接使用标准地址和硬编码的 Key
+    # 1. 重新从配置中调用 Key，而不是写死
+    from config import QWEATHER_API_KEY
+    
+    # 2. 使用你专属的 Host 地址 (这是你成功的关键！)
+    # 注意：这里已经换成了你刚才发现的那个 m563... 专属域名
+    base_host = "m563yx52ka.re.qweatherapi.com"
+    
     params = {"location": city_id, "key": QWEATHER_API_KEY}
-    now_url = "https://devapi.qweather.com/v7/weather/now"
-    daily_url = "https://devapi.qweather.com/v7/weather/3d"
+    now_url = f"https://{base_host}/v7/weather/now"
+    daily_url = f"https://{base_host}/v7/weather/3d"
 
    # 1. 实时天气
     now_resp = requests.get(now_url, params=params, timeout=10)
