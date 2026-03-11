@@ -15,11 +15,13 @@ WEATHER_EMOJI = {
 
 def _get_weather_qweather(city_id: str) -> dict:
     """和风天气 API（主要来源，含丰富细节）"""
-    base_url = f"{QWEATHER_API_HOST}/v7"
+    # 强制使用和风天气标准的 API 地址，不再使用变量
     params = {"location": city_id, "key": QWEATHER_API_KEY}
+    now_url = f"https://devapi.qweather.com/v7/weather/now"
+    daily_url = f"https://devapi.qweather.com/v7/weather/3d"
 
-    # 1. 获取实时天气 (用于体感温度 feelsLike)
-    now_resp = requests.get(f"{base_url}/weather/now", params=params, timeout=10)
+   # 1. 实时天气
+    now_resp = requests.get(now_url, params=params, timeout=10)
     now_resp.raise_for_status()
     now_data = now_resp.json()
     if now_data.get("code") != "200":
@@ -30,7 +32,7 @@ def _get_weather_qweather(city_id: str) -> dict:
     emoji = WEATHER_EMOJI.get(weather_text, "🌈")
 
     # 2. 获取3天预报 (用于日出、日落、紫外线、最高/最低温)
-    daily_resp = requests.get(f"{base_url}/weather/3d", params=params, timeout=10)
+    daily_resp = requests.get(daily_url, params=params, timeout=10)
     daily_resp.raise_for_status()
     daily_data = daily_resp.json()
 
