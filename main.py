@@ -1,5 +1,5 @@
 """
-main.py - PushPlus 群组推送（丰富天气 + Gemini 点评/情话 + 早晚安）
+main.py - PushPlus 群组推送（丰富天气 + 国际新闻 + Gemini 点评/情话 + 早晚安）
 
 运行方式：
     python main.py               # 早安模式
@@ -68,14 +68,17 @@ def push_once(mode: str = "morning"):
                 "sunrise": "--", "sunset": "--", "uv_index": "--",
             })
 
-    # Gemini 生成：天气点评 + 英语情话
+    # Gemini 生成：天气点评 + 国际新闻 + 英语情话
     print(f"\n💕 正在请 Gemini 生成...")
     gemini_result = generate_love_message(weather_sections, mode=mode, date_str=today)
-    comment = gemini_result["comment"]
-    love_msg = gemini_result["love"]
+    comment = gemini_result.get("comment", "")
+    news = gemini_result.get("news", "")
+    love_msg = gemini_result.get("love", "")
 
     if comment:
         print(f"\n   📝 天气点评：{comment}")
+    if news:
+        print(f"   🌍 国际视点：{news}")
     print(f"   💌 英语情话：{love_msg}")
 
     greeting = random.choice(GREETINGS.get(mode, GREETINGS["morning"]))
@@ -86,6 +89,7 @@ def push_once(mode: str = "morning"):
         mode=mode,
         weather_sections=weather_sections,
         gemini_comment=comment,
+        gemini_news=news,  # 👉 将新闻数据传递给排版页面
         love_msg=love_msg,
         greeting=greeting,
     )
