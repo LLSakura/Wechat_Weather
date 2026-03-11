@@ -16,9 +16,13 @@ WEATHER_EMOJI = {
 def _get_weather_qweather(city_id: str) -> dict:
     """和风天气 API（主要来源，含丰富细节）"""
     # 强制使用和风天气标准的 API 地址，不再使用变量
+    # 找到原本定义 QWEATHER_API_KEY 的地方，直接把你的 Key 贴进去
+    # 记得用引号包起来！
+    QWEATHER_API_KEY = "2144afa2fe014792bdf30f11142611a9"
+    # 强制直接使用标准地址和硬编码的 Key
     params = {"location": city_id, "key": QWEATHER_API_KEY}
-    now_url = f"https://devapi.qweather.com/v7/weather/now"
-    daily_url = f"https://devapi.qweather.com/v7/weather/3d"
+    now_url = "https://devapi.qweather.com/v7/weather/now"
+    daily_url = "https://devapi.qweather.com/v7/weather/3d"
 
    # 1. 实时天气
     now_resp = requests.get(now_url, params=params, timeout=10)
