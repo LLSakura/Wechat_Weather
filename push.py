@@ -55,7 +55,7 @@ def build_html_content(date_str, mode, weather_sections, gemini_comment, gemini_
         </div>
         <div style="font-size:13px; color:{text_sub}; line-height:1.8;">
             <div style="display:flex; justify-content:space-between; margin-bottom:4px;">
-                <span>💧 湿度：<strong style="color:{text_dark};">{w.get('humidity','--')}%</strong></span>
+                <span>💧 湿度：<strong style="color:{text_dark};">{w.get('humidity','--')}</strong></span>
                 <span>☀️ 紫外线：<strong style="color:{text_dark};">{w.get('uv_index','--')}</strong></span>
             </div>
             <div style="display:flex; justify-content:space-between;">
