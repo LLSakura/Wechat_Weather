@@ -2,10 +2,10 @@ name: Daily Weather Push
 
 on:
   schedule:
-    # 早安推送：北京时间 07:30 = UTC 23:30 (前一天)
-    - cron: '30 23 * * *'
-    # 晚安推送：北京时间 22:00 = UTC 14:00
-    - cron: '0 14 * * *'
+    # 早安推送：北京时间 07:20 (避开半点拥堵)
+    - cron: '20 23 * * *'
+    # 晚安推送：北京时间 21:50 (避开整点拥堵，防止 12 点才收到)
+    - cron: '50 13 * * *'
 
   # 允许在 GitHub 网页上手动触发
   workflow_dispatch:
@@ -43,9 +43,10 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "push_mode=${{ github.event.inputs.push_mode }}" >> $GITHUB_OUTPUT
           else
-            # 根据 cron 触发时间自动判断模式
+            # 获取 UTC 小时
             HOUR=$(date -u +%H)
-            if [ "$HOUR" = "23" ]; then
+            # 23点或0点触发判断为早安
+            if [ "$HOUR" = "23" ] || [ "$HOUR" = "00" ]; then
               echo "push_mode=morning" >> $GITHUB_OUTPUT
             else
               echo "push_mode=evening" >> $GITHUB_OUTPUT
@@ -63,7 +64,7 @@ jobs:
           # 和风天气
           QWEATHER_API_KEY: ${{ secrets.QWEATHER_API_KEY }}
           QWEATHER_API_HOST: ${{ secrets.QWEATHER_API_HOST }}
-          # 城市配置（非敏感信息，直接写在这里）
+          # 城市配置
           CITY_1_PERSON: Sakura
           CITY_1_ID: '101010100'
           CITY_1_NAME: 北京
@@ -71,4 +72,5 @@ jobs:
           CITY_2_ID: '101240704'
           CITY_2_NAME: 南康
         run: |
-          python main.py --mode ${{ steps.mode.outputs.push_mode }}
+          # 运行脚本，如果失败则等待 30 秒重试一次 (应对 Gemini 503 报错)
+          python main.py --mode ${{ steps.mode.outputs.push_mode }} || (sleep 30 && python main.py --mode ${{ steps.mode.outputs.push_mode }})
