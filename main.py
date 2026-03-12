@@ -2,9 +2,9 @@
 main.py - PushPlus 群组推送（丰富天气 + 国际新闻 + Gemini 点评/情话 + 早晚安）
 
 运行方式：
-    python main.py               # 早安模式
-    python main.py --mode evening # 晚安模式
-    python main.py --schedule     # 定时：早上+晚上各推一次
+    python main.py                # 默认早安模式
+    python main.py --mode evening  # 晚安模式
+    python main.py --schedule      # 本地定时模式（不推荐在 GitHub Actions 使用）
 """
 import argparse
 import random
@@ -70,10 +70,16 @@ def push_once(mode: str = "morning"):
 
     # Gemini 生成：天气点评 + 国际新闻 + 英语情话
     print(f"\n💕 正在请 Gemini 生成...")
-    gemini_result = generate_love_message(weather_sections, mode=mode, date_str=today)
-    comment = gemini_result.get("comment", "")
+    try:
+        gemini_result = generate_love_message(weather_sections, mode=mode, date_str=today)
+    except Exception as e:
+        print(f"   ❌ Gemini 调用异常: {e}")
+        gemini_result = {}
+
+    # 提取并设置兜底文本，防止字段缺失导致 build_html 出错
+    comment = gemini_result.get("comment", "记得按时吃饭，照顾好自己。")
     news = gemini_result.get("news", "")
-    love_msg = gemini_result.get("love", "")
+    love_msg = gemini_result.get("love", "You are the best thing that ever happened to me.")
 
     if comment:
         print(f"\n   📝 天气点评：{comment}")
@@ -81,7 +87,9 @@ def push_once(mode: str = "morning"):
         print(f"   🌍 国际视点：{news}")
     print(f"   💌 英语情话：{love_msg}")
 
-    greeting = random.choice(GREETINGS.get(mode, GREETINGS["morning"]))
+    # 随机选择问候语
+    greeting_list = GREETINGS.get(mode, GREETINGS["morning"])
+    greeting = random.choice(greeting_list)
 
     # 构建 HTML
     content = build_html_content(
@@ -89,14 +97,20 @@ def push_once(mode: str = "morning"):
         mode=mode,
         weather_sections=weather_sections,
         gemini_comment=comment,
-        gemini_news=news,  # 👉 将新闻数据传递给排版页面
+        gemini_news=news,
         love_msg=love_msg,
         greeting=greeting,
     )
 
-    # 推送
+    # 推送标题
     title = f"❤️ 今天也是爱你的一天 · {today}"
-    send_message(title=title, content=content)
+    
+    # 执行发送
+    success = send_message(title=title, content=content)
+    if success:
+        print(f"\n✅ 推送成功！ -> 群组")
+    else:
+        print(f"\n❌ 推送失败，请检查 PushPlus 配置")
 
     print(f"\n{'=' * 60}\n")
 
@@ -115,12 +129,14 @@ def run_scheduled():
 
 
 if __name__ == "__main__":
+    # 使用 argparse 获取 GitHub Actions 传来的 --mode 参数
     parser = argparse.ArgumentParser(description="微信每日推送")
-    parser.add_argument("--schedule", action="store_true", help="启动定时模式")
+    parser.add_argument("--schedule", action="store_true", help="启动本地定时模式")
     parser.add_argument("--mode", choices=["morning", "evening"], default="morning")
     args = parser.parse_args()
 
     if args.schedule:
         run_scheduled()
     else:
+        # 核心：将命令行解析出的 mode 传给执行函数
         push_once(mode=args.mode)
