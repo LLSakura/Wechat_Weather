@@ -2,10 +2,10 @@ name: Daily Weather Push
 
 on:
   schedule:
-    # 早安推送：北京时间 07:20 (避开半点拥堵)
-    - cron: '20 23 * * *'
-    # 晚安推送：北京时间 21:50 (避开整点拥堵，防止 12 点才收到)
-    - cron: '50 13 * * *'
+    # 早安推送：北京时间 07:28 (UTC 23:28) 避开半点高峰
+    - cron: '28 23 * * *'
+    # 晚安推送：北京时间 22:28 (UTC 14:28) 避开半点高峰
+    - cron: '28 14 * * *'
 
   # 允许在 GitHub 网页上手动触发
   workflow_dispatch:
@@ -34,7 +34,7 @@ jobs:
 
       - name: Install Dependencies
         run: |
-          python -m pip install --upgrade pip
+          python - m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Determine Push Mode
@@ -43,28 +43,27 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "push_mode=${{ github.event.inputs.push_mode }}" >> $GITHUB_OUTPUT
           else
-            # 获取 UTC 小时
+            # 获取 UTC 小时 (date -u +%H)
             HOUR=$(date -u +%H)
-            # 23点或0点触发判断为早安
-            if [ "$HOUR" = "23" ] || [ "$HOUR" = "00" ]; then
+            # 23点触发（北京时间07:28）判断为早安
+            if [ "$HOUR" = "23" ]; then
               echo "push_mode=morning" >> $GITHUB_OUTPUT
             else
+              # 14点触发（北京时间22:28）判断为晚安
               echo "push_mode=evening" >> $GITHUB_OUTPUT
             fi
           fi
 
       - name: Run Weather Script
         env:
-          # PushPlus
+          # 以下变量会自动从你的 GitHub Secrets 中读取
           PUSHPLUS_TOKEN: ${{ secrets.PUSHPLUS_TOKEN }}
           PUSHPLUS_TOPIC: ${{ secrets.PUSHPLUS_TOPIC }}
-          # Gemini
           GEMINI_API_KEY: ${{ secrets.GEMINI_API_KEY }}
           GEMINI_MODEL: ${{ secrets.GEMINI_MODEL }}
-          # 和风天气
           QWEATHER_API_KEY: ${{ secrets.QWEATHER_API_KEY }}
           QWEATHER_API_HOST: ${{ secrets.QWEATHER_API_HOST }}
-          # 城市配置
+          # 城市配置（保持你之前的配置）
           CITY_1_PERSON: Sakura
           CITY_1_ID: '101010100'
           CITY_1_NAME: 北京
@@ -72,5 +71,5 @@ jobs:
           CITY_2_ID: '101240704'
           CITY_2_NAME: 南康
         run: |
-          # 运行脚本，如果失败则等待 30 秒重试一次 (应对 Gemini 503 报错)
+          # 运行脚本，如果失败则等待 30 秒重试一次
           python main.py --mode ${{ steps.mode.outputs.push_mode }} || (sleep 30 && python main.py --mode ${{ steps.mode.outputs.push_mode }})
