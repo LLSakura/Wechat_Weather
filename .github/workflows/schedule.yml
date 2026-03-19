@@ -43,14 +43,19 @@ jobs:
           if [ "${{ github.event_name }}" = "workflow_dispatch" ]; then
             echo "push_mode=${{ github.event.inputs.push_mode }}" >> $GITHUB_OUTPUT
           else
-            # 获取 UTC 小时 (date -u +%H)
+            # 获取当前 UTC 小时
             HOUR=$(date -u +%H)
-            # 23点触发（北京时间07:28）判断为早安
-            if [ "$HOUR" = "23" ]; then
+            echo "Current UTC hour is: $HOUR"
+            
+            # 宽泛匹配：UTC 22, 23, 00, 01, 02 都视为早晨推送
+            # 对应北京时间：06:00 - 10:59
+            if [ "$HOUR" = "22" ] || [ "$HOUR" = "23" ] || [ "$HOUR" = "00" ] || [ "$HOUR" = "01" ] || [ "$HOUR" = "02" ]; then
               echo "push_mode=morning" >> $GITHUB_OUTPUT
+              echo "Matched morning mode"
             else
-              # 14点触发（北京时间22:28）判断为晚安
+              # 其余时间（主要是下午到深夜运行的任务）视为晚安推送
               echo "push_mode=evening" >> $GITHUB_OUTPUT
+              echo "Matched evening mode"
             fi
           fi
 
