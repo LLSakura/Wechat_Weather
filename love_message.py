@@ -101,7 +101,6 @@ LOVE: [your English love message here]"""
             config={
                 "temperature": 0.4, # 📉 调低温度，让新闻更严谨客观，减少幻觉
                 "max_output_tokens": 1024,
-                "tools": [{"google_search": {}}], # 🌐 核心魔法：开启谷歌联网搜索！
             },
         )
         text = response.text.strip()
