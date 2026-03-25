@@ -72,8 +72,15 @@ Please write THREE parts, clearly labeled:
 **PART 1 - Weather Commentary (in Chinese, 2-3 sentences):**
 Based on the weather above, give a warm, caring comment. Be specific to the actual weather data. Address them by name.
 
-**PART 2 - Daily International Politics (in Chinese, 3 bullet points):**
-Provide 3 brief, objective bullet points covering today's most important global international political news. Make it concise and easy to read.
+**PART 2 - Real-Time International Politics (in Chinese, 3 bullet points):**
+You MUST act as a strict real-time news aggregator. Provide 3 brief, objective bullet points covering the MOST IMPORTANT global international political news that happened STRICTLY within the past 24 hours (Leading up to today: {date_str or datetime.now().strftime('%Y-%m-%d')}). 
+
+Focus specifically on:
+- Meetings between heads of state (e.g., bilateral talks, summits).
+- Major diplomatic statements or policy shifts.
+- Crucial geopolitical events.
+
+CRITICAL: Do NOT output old news. If no major political news happened in the last 24 hours, provide the most recent significant geopolitical updates.
 
 **PART 3 - Love Message (in English, 2-3 sentences):**
 Write a sweet, poetic English love message. Naturally weave in the weather or time of day. Make it feel personal to {people_names}.
@@ -92,11 +99,13 @@ LOVE: [your English love message here]"""
             model=GEMINI_MODEL,
             contents=prompt,
             config={
-                "temperature": 0.85,
+                "temperature": 0.4, # 📉 调低温度，让新闻更严谨客观，减少幻觉
                 "max_output_tokens": 1024,
+                "tools": [{"google_search": {}}], # 🌐 核心魔法：开启谷歌联网搜索！
             },
         )
         text = response.text.strip()
+
 
         # 解析 COMMENT, NEWS 和 LOVE
         comment = ""
