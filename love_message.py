@@ -102,11 +102,22 @@ LOVE: [your English love message here]"""
         response = client.models.generate_content(
             model=GEMINI_MODEL,
             contents=prompt,
+            response = client.models.generate_content(
+            model=GEMINI_MODEL,
+            contents=prompt,
             config={
                 "temperature": 0.4, 
                 "max_output_tokens": 1024,
+                # ✨ 新增下面这块：强行关闭所有安全过滤限制
+                "safety_settings": [
+                    {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
+                    {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
+                    {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
+                    {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
+                ]
             },
         )
+           
         text = response.text.strip()
 
         # ✨ --- 新的强壮解析逻辑开始 ---
