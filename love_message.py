@@ -104,8 +104,9 @@ LOVE: [your English love message here]"""
             model=GEMINI_MODEL,
             contents=prompt,
             config={
-                "temperature": 0.4, # 📉 调低温度，让新闻更严谨客观，减少幻觉
+                "temperature": 0.4, 
                 "max_output_tokens": 1024,
+                "tools": [{"google_search": {}}], # 🌐 把这行加回来
             },
         )
         text = response.text.strip()
