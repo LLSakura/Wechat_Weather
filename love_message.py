@@ -73,15 +73,19 @@ Please write THREE parts, clearly labeled:
 **PART 1 - Weather Commentary (in Chinese, 2-3 sentences):**
 Based on the weather above, give a warm, caring comment. Be specific to the actual weather data. Address them by name.
 
-**PART 2 - Real-Time International Politics (in Chinese, 3 bullet points):**
-You MUST act as a strict real-time news aggregator. Provide 3 brief, objective bullet points covering the MOST IMPORTANT global international political news that happened STRICTLY within the past 24 hours (Leading up to today: {date_str or datetime.now().strftime('%Y-%m-%d')}). 
+**PART 2 - Hardcore Geopolitics & Tech News (in Chinese, 3 bullet points):**
+You MUST act as a sharp, top-tier geopolitical and tech analyst. Provide 3 brief, highly specific bullet points covering recent MAJOR, world-shifting news. 
 
-Focus specifically on:
-- Meetings between heads of state (e.g., bilateral talks, summits).
-- Major diplomatic statements or policy shifts.
-- Crucial geopolitical events.
+CRITICAL RULES:
+- DO NOT output generic diplomatic summaries (e.g., "countries held a summit" or "signed a framework"). 
+- Focus ONLY on high-impact events with concrete details (specific names of leaders, companies, or technologies).
 
-CRITICAL: Do NOT output old news. If no major political news happened in the last 24 hours, provide the most recent significant geopolitical updates.
+Please structure the 3 points exactly as follows:
+1. Superpower Dynamics: A major action by global superpowers (e.g., US Presidential decisions, US-China tech/trade policies, or significant geopolitical conflicts).
+2. AI & Frontier Tech: A specific breakthrough, major release, or regulatory shift in Artificial Intelligence (e.g., updates on LLMs, OpenAI, tech giant moves, or new AI development frameworks).
+3. Global Impact: A "wild-card" event that heavily influences global markets, energy, or supply chains.
+
+Make the tone sharp, insightful, and straight to the point.
 
 **PART 3 - Love Message (in English, 2-3 sentences):**
 Write a sweet, poetic English love message. Naturally weave in the weather or time of day. Make it feel personal to {people_names}.
