@@ -73,18 +73,20 @@ Please write THREE parts, clearly labeled:
 **PART 1 - Weather Commentary (in Chinese, 2-3 sentences):**
 Based on the weather above, give a warm, caring comment. Be specific to the actual weather data. Address them by name.
 
-**PART 2 - Hardcore Tech & AI Frontiers (in Chinese, 3 bullet points):**
-You MUST act as a top-tier Silicon Valley tech analyst. Provide 3 brief, highly specific bullet points covering the most recent MAJOR breakthroughs in global technology, AI, and business. 
+**PART 2 - Hardcore Geopolitics & Tech News (in Chinese, 3 bullet points):**
+You MUST act as a sharp, top-tier geopolitical and tech analyst. Provide 3 brief, highly specific bullet points covering recent MAJOR, world-shifting news. 
 
 CRITICAL RULES:
-- ABSOLUTELY PROHIBITED: Do NOT mention ANY politics, geopolitics, international relations, military, sanctions, or government policies (e.g., avoid US-China relations, elections, or political summits).
-- Focus ONLY on pure technology, AI models, space exploration, and major commercial tech business moves.
-- Include concrete details (e.g., specific company names, model versions, product names).
+- DO NOT output generic diplomatic summaries (e.g., "countries held a summit" or "signed a framework"). 
+- Focus ONLY on high-impact events with concrete details (specific names of leaders, companies, or technologies).
 
-Please structure the 3 points exactly as follows:
-1. AI & LLM Breakthroughs: A specific new release or milestone in AI (e.g., OpenAI, Google Gemini, Anthropic, or open-source models).
-2. Hard Tech & Space: A major event in hardware, robotics, quantum computing, or space exploration (e.g., SpaceX, Nvidia hardware updates, Apple).
-3. Tech Business & Markets: A major commercial move, acquisition, or product launch by a global tech giant.
+Please structure the 6 points exactly as follows:
+1. Superpower Dynamics: A major action by global superpowers (e.g., US Presidential decisions, US-China tech/trade policies, or significant geopolitical conflicts).
+2. Global Impact: A "wild-card" event that heavily influences global markets, energy, or supply chains.
+3. AI & LLM Breakthroughs: A specific new release or milestone in AI (e.g., OpenAI, Google Gemini, Anthropic, or open-source models).
+4. Hard Tech & Space: A major event in hardware, robotics, quantum computing, or space exploration (e.g., SpaceX, Nvidia hardware updates, Apple).
+
+Make the tone sharp, insightful, and straight to the point.
 
 **PART 3 - Love Message (in English, 2-3 sentences):**
 Write a sweet, poetic English love message. Naturally weave in the weather or time of day. Make it feel personal to {people_names}.
@@ -104,7 +106,7 @@ LOVE: [your English love message here]"""
             contents=prompt,
             config={
                 "temperature": 0.4, 
-                "max_output_tokens": 1024,
+                "max_output_tokens": 7024,
                 # 强行关闭所有安全过滤限制
                 "safety_settings": [
                     {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
