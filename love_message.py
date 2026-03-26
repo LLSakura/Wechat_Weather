@@ -102,23 +102,20 @@ LOVE: [your English love message here]"""
         response = client.models.generate_content(
             model=GEMINI_MODEL,
             contents=prompt,
-            response = client.models.generate_content(
-            model=GEMINI_MODEL,
-            contents=prompt,
             config={
                 "temperature": 0.4, 
                 "max_output_tokens": 1024,
-                # ✨ 新增下面这块：强行关闭所有安全过滤限制
+                # 强行关闭所有安全过滤限制
                 "safety_settings": [
                     {"category": "HARM_CATEGORY_HARASSMENT", "threshold": "BLOCK_NONE"},
                     {"category": "HARM_CATEGORY_HATE_SPEECH", "threshold": "BLOCK_NONE"},
                     {"category": "HARM_CATEGORY_SEXUALLY_EXPLICIT", "threshold": "BLOCK_NONE"},
                     {"category": "HARM_CATEGORY_DANGEROUS_CONTENT", "threshold": "BLOCK_NONE"}
                 ]
-            },
-        )
-           
+            } # ✨ 必须有这个右大括号，闭合 config
+        ) # ✨ 必须有这个右括号，闭合 generate_content
         text = response.text.strip()
+
 
         # ✨ --- 新的强壮解析逻辑开始 ---
         # 1. 过滤掉 AI 可能自动加上的 Markdown 加粗星号
