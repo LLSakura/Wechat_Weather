@@ -73,18 +73,18 @@ Please write THREE parts, clearly labeled:
 **PART 1 - Weather Commentary (in Chinese, 2-3 sentences):**
 Based on the weather above, give a warm, caring comment. Be specific to the actual weather data. Address them by name.
 
-**PART 2 - Hardcore Geopolitics & Tech Trends (in Chinese, 3 bullet points):**
-You MUST act as a sharp, top-tier tech and market analyst. Provide 3 brief, highly specific bullet points covering MAJOR world-shifting news or tech breakthroughs from the recent period. 
+**PART 2 - Hardcore Tech & AI Frontiers (in Chinese, 3 bullet points):**
+You MUST act as a top-tier Silicon Valley tech analyst. Provide 3 brief, highly specific bullet points covering the most recent MAJOR breakthroughs in global technology, AI, and business. 
 
 CRITICAL RULES:
-- Do NOT apologize for lacking real-time data today. 
-- ABSOLUTELY PROHIBITED: Do NOT mention US-China export controls, sanctions, BIS, military tech, or geopolitical blockades. If you do, the system will crash.
-- Focus ONLY on high-impact events with concrete details (specific names of leaders, companies, or technologies).
+- ABSOLUTELY PROHIBITED: Do NOT mention ANY politics, geopolitics, international relations, military, sanctions, or government policies (e.g., avoid US-China relations, elections, or political summits).
+- Focus ONLY on pure technology, AI models, space exploration, and major commercial tech business moves.
+- Include concrete details (e.g., specific company names, model versions, product names).
 
 Please structure the 3 points exactly as follows:
-1. Global Tech & Economy: Major international policy shifts, economic decisions, or global trade updates (Focus on positive macro-trends and business, STRICTLY AVOID sanctions/tariffs).
-2. AI & Frontier Tech: A specific breakthrough or major release in Artificial Intelligence (e.g., updates on LLMs, OpenAI, tech giant moves).
-3. Global Impact: A "wild-card" event that heavily influences global markets, energy, or supply chains.
+1. AI & LLM Breakthroughs: A specific new release or milestone in AI (e.g., OpenAI, Google Gemini, Anthropic, or open-source models).
+2. Hard Tech & Space: A major event in hardware, robotics, quantum computing, or space exploration (e.g., SpaceX, Nvidia hardware updates, Apple).
+3. Tech Business & Markets: A major commercial move, acquisition, or product launch by a global tech giant.
 
 **PART 3 - Love Message (in English, 2-3 sentences):**
 Write a sweet, poetic English love message. Naturally weave in the weather or time of day. Make it feel personal to {people_names}.
