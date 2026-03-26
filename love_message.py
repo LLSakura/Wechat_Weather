@@ -2,6 +2,7 @@
 love_message.py - 使用 Gemini 生成：天气点评 + 国际政治新闻 + 个性化英语情话
 """
 import random
+import re  # ✨ 新增这行，引入正则库
 from datetime import datetime
 
 from google import genai
@@ -105,31 +106,30 @@ LOVE: [your English love message here]"""
         )
         text = response.text.strip()
 
-
-        # 解析 COMMENT, NEWS 和 LOVE
-        comment = ""
-        news = ""
-        love = ""
+        # ✨ --- 新的强壮解析逻辑开始 ---
+        # 1. 过滤掉 AI 可能自动加上的 Markdown 加粗星号
+        clean_text = text.replace("**", "")
         
-        if "COMMENT:" in text and "NEWS:" in text and "LOVE:" in text:
-            try:
-                parts = text.split("NEWS:")
-                comment = parts[0].replace("COMMENT:", "").strip()
-                
-                parts2 = parts[1].split("LOVE:")
-                news = parts2[0].strip()
-                love = parts2[1].strip().strip('"').strip("'").strip()
-            except Exception:
-                love = text.strip('"').strip("'").strip()
-        else:
-            # 如果格式不对，整段作为 love 兜底
-            love = text.strip('"').strip("'").strip()
+        # 2. 使用正则表达式灵活提取（忽略大小写，且即使某一部分缺失也不会崩溃）
+        comment_match = re.search(r'COMMENT:\s*(.*?)(?=NEWS:|LOVE:|$)', clean_text, re.DOTALL | re.IGNORECASE)
+        news_match = re.search(r'NEWS:\s*(.*?)(?=LOVE:|$)', clean_text, re.DOTALL | re.IGNORECASE)
+        love_match = re.search(r'LOVE:\s*(.*)', clean_text, re.DOTALL | re.IGNORECASE)
+        
+        comment = comment_match.group(1).strip() if comment_match else ""
+        news = news_match.group(1).strip() if news_match else ""
+        love = love_match.group(1).strip().strip('"').strip("'") if love_match else ""
+        
+        # 3. 极端兜底：如果完全没有按格式输出，把整个文本扔给 love
+        if not comment_match and not news_match and not love_match:
+            love = clean_text.strip('"').strip("'").strip()
+        # ✨ --- 新的强壮解析逻辑结束 ---
 
         return {
             "comment": comment if comment else "",
-            "news": news if news else "今日国际新闻生成失败。",
+            "news": news if news else "今日国际新闻生成失败（AI可能无法获取最新资讯）。",
             "love": love if love else random.choice(CLASSIC_LOVE_MESSAGES),
         }
+    
     except Exception as e:
         print(f"  ⚠️ Gemini 调用失败（{e}），使用经典情话")
         return {
