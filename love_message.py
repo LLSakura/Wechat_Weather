@@ -74,15 +74,15 @@ Please write THREE parts, clearly labeled:
 Based on the weather above, give a warm, caring comment. Be specific to the actual weather data. Address them by name.
 
 **PART 2 - Hardcore Geopolitics & Tech Trends (in Chinese, 3 bullet points):**
-You MUST act as a sharp, top-tier geopolitical and tech analyst. Provide 3 brief, highly specific bullet points covering MAJOR world-shifting news, breakthroughs, or geopolitical shifts from **the recent period**. 
+You MUST act as a sharp, top-tier tech and market analyst. Provide 3 brief, highly specific bullet points covering MAJOR world-shifting news or tech breakthroughs from the recent period. 
 
 CRITICAL RULES:
-- Do NOT apologize for lacking real-time data today. Just provide the most recent and impactful major events you know of.
-- DO NOT output generic diplomatic summaries (e.g., "held a summit"). 
+- Do NOT apologize for lacking real-time data today. 
+- ABSOLUTELY PROHIBITED: Do NOT mention US-China export controls, sanctions, BIS, military tech, or geopolitical blockades. If you do, the system will crash.
 - Focus ONLY on high-impact events with concrete details (specific names of leaders, companies, or technologies).
 
 Please structure the 3 points exactly as follows:
-1. Superpower Dynamics: A major action by global superpowers (e.g., US Presidential decisions, US-China tech/trade policies).
+1. Global Tech & Economy: Major international policy shifts, economic decisions, or global trade updates (Focus on positive macro-trends and business, STRICTLY AVOID sanctions/tariffs).
 2. AI & Frontier Tech: A specific breakthrough or major release in Artificial Intelligence (e.g., updates on LLMs, OpenAI, tech giant moves).
 3. Global Impact: A "wild-card" event that heavily influences global markets, energy, or supply chains.
 
